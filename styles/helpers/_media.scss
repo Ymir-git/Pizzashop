@@ -1,0 +1,54 @@
+@use './functions' as *;
+
+$laptop-b: 1440.98px;
+$laptop: 1200.98px;
+$laptop-s: 1024.98px;
+$tablet: 768.98px;
+$mobile-b: 425.98px;
+
+
+
+@mixin laptop-b{
+  @media (width <= 1440.98px) {
+    @content;
+  }
+}
+
+@mixin laptop{
+  @media (width <= 1200.98px) {
+    @content;
+  }
+}
+
+@mixin laptop-s{
+  @media (width <= 1024.98px) {
+    @content;
+  }
+}
+
+@mixin tablet{
+  @media (width <= 768.98px) {
+    @content;
+  }
+}
+
+@mixin mobile-b{
+  @media (width <= 425.98px) {
+    @content;
+  }
+}
+
+@mixin hover($hasActiveEffectOnMobile: true){
+  @media (any-hover: hover){
+    &:hover{
+      @content;
+    }
+  }
+  @if ($hasActiveEffectOnMobile){
+    @media (any-hover: none){
+      &:active{
+        @content;
+      }
+    }
+  }
+}

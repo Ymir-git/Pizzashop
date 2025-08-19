@@ -1,0 +1,36 @@
+@use '../helpers' as *;
+
+.button {
+  position: relative;
+  flex-shrink: 0;
+  font-size: 17.451px;
+  font-weight: 500;
+  line-height: 109.5%;
+  padding: 15px 48px 11px 57px;
+  border-radius: 84.374px;
+  color: var(--color-light);
+  background: var(--gradient);
+  box-shadow: 0 7.594px 33.75px 0 rgba(255, 107, 0, 0.06);
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(261deg, #FE9C1C -17.13%, #FF5E2A 86.76%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+  }
+
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
+  }
+}

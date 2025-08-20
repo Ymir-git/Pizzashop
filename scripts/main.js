@@ -41,3 +41,56 @@ if (shadow) {
     }
   });
 }
+
+// 4) Закрытие меню свайпом вправо (тач-устройства)
+(() => {
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  const thresholdX = 60; // минимальная горизонтальная дистанция, px
+  const restraintY = 80; // допустимое вертикальное отклонение, px
+
+  const isMenuOpen = () => !!menu && menu.classList.contains('menu--open');
+
+  const handleTouchStart = (e) => {
+    if (!isMenuOpen()) return;
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    startX = t.clientX;
+    startY = t.clientY;
+    tracking = true;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!tracking) return;
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    // если движение преимущественно горизонтальное, отключим скролл
+    if (Math.abs(dx) > Math.abs(dy)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches && e.changedTouches[0];
+    if (!t) return;
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+
+    // свайп вправо: положительный dx, малое вертикальное смещение
+    if (dx > thresholdX && Math.abs(dy) < restraintY && isMenuOpen()) {
+      setMenuState(false);
+      if (checkbox) checkbox.checked = false;
+    }
+  };
+
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
+  // passive: false нужен для preventDefault в move
+  document.addEventListener('touchmove', handleTouchMove, { passive: false });
+  document.addEventListener('touchend', handleTouchEnd, { passive: true });
+})();

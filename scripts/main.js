@@ -42,7 +42,7 @@ if (shadow) {
   });
 }
 
-// 4) Закрытие меню свайпом вправо (тач-устройства)
+// 4) Закрытие меню свайпом вправо (Pointer Events с фолбэком на Touch)
 (() => {
   let startX = 0;
   let startY = 0;
@@ -53,34 +53,28 @@ if (shadow) {
 
   const isMenuOpen = () => !!menu && menu.classList.contains('menu--open');
 
-  const handleTouchStart = (e) => {
+  const onStart = (x, y) => {
     if (!isMenuOpen()) return;
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    startX = t.clientX;
-    startY = t.clientY;
+    startX = x;
+    startY = y;
     tracking = true;
   };
 
-  const handleTouchMove = (e) => {
+  const onMove = (x, y, e) => {
     if (!tracking) return;
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    const dx = t.clientX - startX;
-    const dy = t.clientY - startY;
+    const dx = x - startX;
+    const dy = y - startY;
     // если движение преимущественно горизонтальное, отключим скролл
     if (Math.abs(dx) > Math.abs(dy)) {
-      e.preventDefault();
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
     }
   };
 
-  const handleTouchEnd = (e) => {
+  const onEnd = (x, y) => {
     if (!tracking) return;
     tracking = false;
-    const t = e.changedTouches && e.changedTouches[0];
-    if (!t) return;
-    const dx = t.clientX - startX;
-    const dy = t.clientY - startY;
+    const dx = x - startX;
+    const dy = y - startY;
 
     // свайп вправо: положительный dx, малое вертикальное смещение
     if (dx > thresholdX && Math.abs(dy) < restraintY && isMenuOpen()) {
@@ -89,8 +83,51 @@ if (shadow) {
     }
   };
 
-  document.addEventListener('touchstart', handleTouchStart, { passive: true });
-  // passive: false нужен для preventDefault в move
-  document.addEventListener('touchmove', handleTouchMove, { passive: false });
-  document.addEventListener('touchend', handleTouchEnd, { passive: true });
+  const addPointerHandlers = (el) => {
+    if (!el) return;
+
+    // Pointer Events
+    if (window.PointerEvent) {
+      el.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse') return; // игнорируем мышь
+        onStart(e.clientX, e.clientY);
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'mouse') return;
+        onMove(e.clientX, e.clientY, e);
+      }, { passive: false });
+      const finish = (e) => {
+        if (e.pointerType === 'mouse') return;
+        onEnd(e.clientX, e.clientY);
+      };
+      el.addEventListener('pointerup', finish);
+      el.addEventListener('pointercancel', () => { tracking = false; });
+      return;
+    }
+
+    // Touch fallback
+    el.addEventListener('touchstart', (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      onStart(t.clientX, t.clientY);
+    }, { passive: true });
+
+    el.addEventListener('touchmove', (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      onMove(t.clientX, t.clientY, e);
+    }, { passive: false });
+
+    el.addEventListener('touchend', (e) => {
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      onEnd(t.clientX, t.clientY);
+    }, { passive: true });
+
+    el.addEventListener('touchcancel', () => { tracking = false; });
+  };
+
+  // Навешиваем на перекрывающие элементы при открытом меню
+  addPointerHandlers(menu);
+  addPointerHandlers(shadow);
 })();

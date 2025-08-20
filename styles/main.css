@@ -173,6 +173,8 @@ body {
   background: linear-gradient(246deg, #1E0C00 4.96%, #1F0700 33.7%, #170A00 68.41%, #1E0D00 96.42%);
   font-family: var(--font-family-base);
   line-height: 109.5%;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 main {

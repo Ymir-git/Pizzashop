@@ -806,7 +806,7 @@ p {
 .header__main .main__subtitle {
   max-width: clamp(18.3125rem, 16.196883378rem + 7.908847185vw, 25.6875rem);
   font-size: 19.562px;
-  line-height: normal;
+  line-height: 151.5%;
   padding-block: clamp(1.491875rem, 1.3819705094rem + 0.4108579088vw, 1.875rem) 23px;
 }
 @media (width <= 1024.98px) {

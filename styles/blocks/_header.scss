@@ -302,6 +302,8 @@
         /* Стили для кнопки */
         .open-popup {
           padding: 57px 95px 55.38px 96px;
+          position: relative;
+          overflow: hidden;
           cursor: pointer;
           background-image: url(../images/video-bg.jpg);
           background-repeat: no-repeat;
@@ -310,15 +312,35 @@
           color: white;
           border: none;
           border-radius: 23px;
-          box-shadow: 0 4px 29px 0 rgba(255, 78, 21, 0.10);
-          filter: brightness(0.5);
           transition: .5s ease;
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+            transition: 0.5s ease;
+
+          }
+
+          &:hover {
+            &::after {
+              background: rgba(0, 0, 0, 0);
+            }
+
+            img {
+              filter: drop-shadow(0 4.629px 33.557px #000) drop-shadow(0 4px 24px rgba(255, 61, 0, 0.67));
+            }
+          }
+
+          img {
+            position: relative;
+            z-index: 1;
+          }
         }
 
-        .open-popup:hover {
-          filter: brightness(1);
-          box-shadow: 0 5px 30px rgba(255, 61, 0, 0.67);
-        }
+
       }
 
       &__switch {

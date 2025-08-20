@@ -153,13 +153,6 @@ select {
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: "Alex Brush";
-  src: url("../fonts/AlexBrush-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 html {
   height: 100%;
   scrollbar-gutter: stable;
@@ -764,7 +757,7 @@ p {
   }
 }
 .header__main .main {
-  padding-top: clamp(4.75rem, 3.9431970509rem + 3.0160857909vw, 7.5625rem);
+  padding-top: clamp(4.75rem, 3.9611260054rem + 2.9490616622vw, 7.5rem);
   flex-direction: column;
   align-items: start;
   max-width: 538px;
@@ -772,6 +765,7 @@ p {
 .header__main .main__title {
   position: relative;
   font-size: 69.17px;
+  line-height: 90%;
 }
 @media (width <= 1024.98px) {
   .header__main .main__title {
@@ -779,9 +773,10 @@ p {
   }
 }
 .header__main .main__title span {
+  position: relative;
   display: inline-flex;
   transform: translateY(15%);
-  width: clamp(2.125rem, 1.8739946381rem + 0.9383378016vw, 3rem);
+  width: clamp(2.4375rem, 2.1685656836rem + 1.0053619303vw, 3.375rem);
 }
 .header__main .main__title span img {
   width: 100%;
@@ -922,14 +917,14 @@ p {
 .header__main .main__switch::after {
   content: "";
   position: absolute;
-  right: -30%;
-  bottom: -68%;
+  right: -53%;
+  bottom: -156%;
   transform: translateY(-50%);
-  width: 68px;
-  height: 66px;
+  width: 162px;
+  height: 160px;
   background-image: url(../images/arrow-2.png);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 @media (width <= 1024.98px) {
   .header__main .main__switch::after {

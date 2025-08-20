@@ -4,16 +4,81 @@ const shadow = document.querySelector('body > .shadow');
 const body = document.body;
 const iconMenu = document.querySelector('.icon-menu');
 
+// Login modal elements
+const loginModal = document.getElementById('loginModal');
+const loginButtons = document.querySelectorAll('.login-btn');
+const loginCloseBtn = document.querySelector('.login-modal__close');
+let lastFocusedBeforeLogin = null;
+
+// Cart modal elements
+const cartModal = document.getElementById('cartModal');
+const cartOpenBtn = document.querySelector('.bag');
+const cartCloseBtn = document.querySelector('.cart-modal__close');
+let lastFocusedBeforeCart = null;
+
+function setShadow(open) {
+  if (!shadow) return;
+  shadow.classList.toggle('shadow--open', open);
+}
+
+function openLoginModal() {
+  if (!loginModal) return;
+  lastFocusedBeforeLogin = document.activeElement;
+  loginModal.classList.add('login-modal--open');
+  setShadow(true);
+  body.classList.add('no-scroll');
+  // Focus first field
+  const firstInput = loginModal.querySelector('input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (firstInput) firstInput.focus();
+}
+
+function openCartModal() {
+  if (!cartModal) return;
+  lastFocusedBeforeCart = document.activeElement;
+  cartModal.classList.add('cart-modal--open');
+  setShadow(true);
+  body.classList.add('no-scroll');
+  const focusable = cartModal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (focusable) focusable.focus();
+}
+
+function closeLoginModal() {
+  if (!loginModal) return;
+  loginModal.classList.remove('login-modal--open');
+  // if menu is not open, remove shadow
+  const menuOpen = menu && menu.classList.contains('menu--open');
+  const cartOpen = cartModal && cartModal.classList.contains('cart-modal--open');
+  setShadow(!!(menuOpen || cartOpen));
+  if (!menuOpen && !cartOpen) body.classList.remove('no-scroll');
+  if (lastFocusedBeforeLogin && typeof lastFocusedBeforeLogin.focus === 'function') {
+    lastFocusedBeforeLogin.focus();
+  }
+}
+
+function closeCartModal() {
+  if (!cartModal) return;
+  cartModal.classList.remove('cart-modal--open');
+  const menuOpen = menu && menu.classList.contains('menu--open');
+  const loginOpen = loginModal && loginModal.classList.contains('login-modal--open');
+  setShadow(!!(menuOpen || loginOpen));
+  if (!menuOpen && !loginOpen) body.classList.remove('no-scroll');
+  if (lastFocusedBeforeCart && typeof lastFocusedBeforeCart.focus === 'function') {
+    lastFocusedBeforeCart.focus();
+  }
+}
+
 function setMenuState(open) {
   if (!menu) return;
   if (open) {
     menu.classList.add('menu--open');
-    if (shadow) shadow.classList.add('shadow--open');
+    setShadow(true);
     body.classList.add('no-scroll');
   } else {
     menu.classList.remove('menu--open');
-    if (shadow) shadow.classList.remove('shadow--open');
-    body.classList.remove('no-scroll');
+    // keep shadow if login modal is open
+    const loginOpen = loginModal && loginModal.classList.contains('login-modal--open');
+    setShadow(!!loginOpen);
+    if (!loginOpen) body.classList.remove('no-scroll');
   }
 }
 
@@ -32,10 +97,16 @@ if (!checkbox && iconMenu) {
   });
 }
 
-// 3) Клик по затемнению: закрываем меню и СНИМАЕМ чекбокс
+// 3) Клик по затемнению: закрываем меню/логин/корзину и СНИМАЕМ чекбокс
 if (shadow) {
   shadow.addEventListener('click', (e) => {
     if (e.target === shadow) {
+      if (loginModal && loginModal.classList.contains('login-modal--open')) {
+        closeLoginModal();
+      }
+      if (cartModal && cartModal.classList.contains('cart-modal--open')) {
+        closeCartModal();
+      }
       setMenuState(false);
       if (checkbox) checkbox.checked = false;
     }
@@ -131,3 +202,43 @@ if (shadow) {
   addPointerHandlers(menu);
   addPointerHandlers(shadow);
 })();
+
+// 5) Login modal wiring
+if (loginButtons && loginButtons.length) {
+  loginButtons.forEach(btn => btn.addEventListener('click', openLoginModal));
+}
+if (loginCloseBtn) {
+  loginCloseBtn.addEventListener('click', closeLoginModal);
+}
+if (loginModal) {
+  // close on outside click
+  loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) closeLoginModal();
+  });
+}
+
+// 6) Cart modal wiring
+if (cartOpenBtn) {
+  cartOpenBtn.addEventListener('click', openCartModal);
+}
+if (cartCloseBtn) {
+  cartCloseBtn.addEventListener('click', closeCartModal);
+}
+if (cartModal) {
+  cartModal.addEventListener('click', (e) => {
+    // click on backdrop area (not panel)
+    if (e.target === cartModal) closeCartModal();
+  });
+}
+
+// Global ESC handler for both modals
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (loginModal && loginModal.classList.contains('login-modal--open')) {
+      closeLoginModal();
+    }
+    if (cartModal && cartModal.classList.contains('cart-modal--open')) {
+      closeCartModal();
+    }
+  }
+});

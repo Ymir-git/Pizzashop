@@ -22,18 +22,17 @@ main {
   flex-grow: 1;
 }
 
-h1,
-.h1,
-h2,
-.h2 {
+h1,.h1,
+h2,.h2 {
   font-size: fluid(69.17, 48);
   font-weight: 800;
+  line-height: 109.5%;
 }
 
-h3,
-.h3 {
+h3,.h3 {
   font-size: fluid(25.102, 15.349);
   font-weight: 500;
+  line-height: 109.5%;
 }
 
 p {

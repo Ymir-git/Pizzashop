@@ -8,11 +8,12 @@
   <title>Pizzashop</title>
   <link href="styles/main.css" rel="stylesheet">
   <script src="scripts/main.js" defer></script>
+  <script src="scripts/video-btn.js" defer></script>
 </head>
 
 <body>
   <header class="header">
-    <div class="header__wrapper d-flex container">
+    <div class="header__top d-flex container">
       <div class="logo">
         <a href="#!" data-text="pizzashop">pizzashop</a>
       </div>
@@ -31,7 +32,7 @@
             <a href="#!">About us</a>
           </li>
         </ul>
-        <button class="menu-login-btn button" type="button">Log in</button>
+        <button class="login-btn button" type="button">Log in</button>
       </nav>
       <div class="right-nav d-flex">
         <button class="login-btn button" type="button">Log in</button>
@@ -41,15 +42,80 @@
         <div class="burger-btn">
           <input hidden="" class="check-icon" id="check-icon" name="check-icon" type="checkbox">
           <label class="icon-menu" for="check-icon">
-            <div class="bar bar--1"></div>
-            <div class="bar bar--2"></div>
-            <div class="bar bar--3"></div>
+            <span class="bar bar--1"></span>
+            <span class="bar bar--2"></span>
+            <span class="bar bar--3"></span>
           </label>
         </div>
       </div>
     </div>
+    <div class="header__main d-flex container">
+      <div class="main d-flex">
+        <h1 class="main__title">The Fastest<br> Pizza
+          <span>
+            <img src="images/header-main-title.png" alt="">
+          </span> Delivery</h1>
+        <p class="main__subtitle">We will deliver juicy pizza for your family in 30 minutes, if the courier is late - <a href="#!">pizza is free!</a></p>
+        <div class="main__video">
+          <p>Cooking process:</p>
+          <button class="open-popup">
+            <img class="" src="images/video-button.png" alt="" width="81" height="81">
+          </button>
+          <div class="popup" id="videoPopup">
+            <div class="popup-content">
+              <span class="close-popup">&times;</span>
+              <iframe width="860" height="515" src="https://www.youtube.com/embed/7j3y7M7gr6U" title="YouTube video"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="main__switch">
+          <label for="filter" class="switch" aria-label="Toggle Filter">
+            <input type="checkbox" id="filter" />
+            <span>To order</span>
+            <span>Pizza-Menu</span>
+          </label>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="extra__main-img">
+          <img src="images/header-main-img.png" alt="pizza-image">
+        </div>
+      </div>
     </div>
   </header>
+  <div class="login-modal" id="loginModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="login-modal__content" role="document">
+      <button type="button" class="login-modal__close" aria-label="Close">&times;</button>
+      <h3 class="h3">Sign in</h3>
+      <form class="login-form" action="#!" method="post">
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required placeholder="you@example.com" />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required placeholder="••••••••" />
+        </label>
+        <button type="submit" class="button">Log in</button>
+      </form>
+    </div>
+  </div>
+  <div class="cart-modal" id="cartModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="cart-modal__panel" role="document">
+      <div class="cart-modal__header">
+        <h3 class="h3">Your cart</h3>
+        <button type="button" class="cart-modal__close" aria-label="Close">&times;</button>
+      </div>
+      <div class="cart-modal__body">
+        <p class="cart-empty">Your cart is empty.</p>
+      </div>
+      <div class="cart-modal__footer">
+        <button class="button" type="button">Checkout</button>
+      </div>
+    </div>
+  </div>
   <div class="shadow"></div>
 </body>
 

@@ -1,0 +1,97 @@
+@use '../helpers' as *;
+
+.switch {
+  --_switch-bg-clr: var(--gradient);
+  --_switch-padding: 2px;
+  /* padding around button*/
+  --_slider-bg-clr: #1E0C00;
+  /* slider color unchecked */
+  --_slider-bg-clr-on: #1E0C00;
+  /* slider color checked */
+  --_slider-txt-clr: #ffffff;
+
+  /* easing on toggle switch */
+  color: white;
+  font-size: fluid(22, 16.012);
+  font-weight: 500;
+  line-height: 123.5%;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  position: relative;
+  isolation: isolate;
+}
+
+.switch input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.switch>span {
+  display: grid;
+  place-content: center;
+  transition: opacity 300ms ease-in-out 150ms;
+  padding: fluid(17, 12) fluid(35, 25);
+}
+
+.switch::before,
+.switch::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  transition: inset 150ms ease-in-out;
+}
+
+/* switch slider */
+.switch::before {
+  background: var(--_slider-bg-clr);
+  inset: var(--_switch-padding) 50% var(--_switch-padding) var(--_switch-padding);
+  transition:
+    inset 300ms ease-in-out,
+    background 300ms ease-in-out;
+  z-index: -1;
+}
+
+/* switch bg color */
+.switch::after {
+  background: var(--_switch-bg-clr);
+  inset: 0;
+  z-index: -2;
+}
+
+/* switch hover */
+.switch:has(input:checked):hover::before {
+  inset: var(--_switch-padding) var(--_switch-padding) var(--_switch-padding) 45%;
+}
+
+.switch:has(input:not(:checked)):hover::before {
+  inset: var(--_switch-padding) 45% var(--_switch-padding) var(--_switch-padding);
+}
+
+/* checked - move slider to right */
+.switch:has(input:checked)::before {
+  background: var(--_slider-bg-clr-on);
+  inset: var(--_switch-padding) var(--_switch-padding) var(--_switch-padding) 50%;
+}
+
+/* checked - set opacity */
+.switch>span:last-of-type,
+.switch>input:checked+span:first-of-type {
+  opacity: 0.75;
+}
+
+.switch>input:checked~span:last-of-type {
+  opacity: 1;
+}

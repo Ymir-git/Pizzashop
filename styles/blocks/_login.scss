@@ -1,0 +1,70 @@
+@use '../helpers' as *;
+
+/* Login Modal */
+.login-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  /* Above shadow and header */
+}
+
+.login-modal--open {
+  display: flex;
+}
+
+.login-modal__content {
+  position: relative;
+  background: #0f0a05;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(90vw, 420px);
+  box-shadow: 0 4px 30px rgba(255, 78, 21, 0.30);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.login-modal__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.login-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: #A3A3A3;
+}
+
+.login-form input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #1b120c;
+  color: #fff;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-color: #ff4e15;
+  box-shadow: 0 0 0 3px rgba(255, 78, 21, 0.25);
+}
+
+.login-form .button {
+  margin-top: 6px;
+  width: 100%;
+}

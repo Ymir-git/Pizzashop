@@ -78,6 +78,7 @@
 
       &--open {
         transform: translateX(0%);
+        box-shadow: rgba(255, 78, 21, 0.25) -6px 0px 30px;
       }
 
       &__list {

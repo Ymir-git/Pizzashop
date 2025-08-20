@@ -619,6 +619,7 @@ p {
 }
 .header__top .menu--open {
   transform: translateX(0%);
+  box-shadow: rgba(255, 78, 21, 0.25) -6px 0px 30px;
 }
 .header__top .menu__list {
   gap: clamp(1.875rem, 0.9785522788rem + 3.3512064343vw, 5rem);

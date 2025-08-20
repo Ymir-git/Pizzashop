@@ -4,6 +4,23 @@
   &__top {
     justify-content: space-between;
     padding-top: fluid(57, 29);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0%;
+      width: 473px;
+      height: 210px;
+      background-image: url(../images/pizza-bg.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+  
+      @include laptop-s {
+        display: none;
+      }
+    } 
 
     .logo {
       display: flex;
@@ -165,6 +182,7 @@
 
 
   &__main {
+    position: relative;
 
     justify-content: space-between;
 
@@ -175,7 +193,39 @@
     @include tablet {
       flex-direction: column-reverse;
     }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      right: 10%;
+      bottom: -14%;
+      width: 518px;
+      height: 230px;
+      background-image: url(../images/pizza-bg.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+  
+      @include laptop-s {
+        display: none;
+      }
+    } 
 
+    &::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      width: 518px;
+      height: 230px;
+      background-image: url(../images/pizza-bg.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+  
+      @include laptop-s {
+        display: none;
+      }
+    } 
+    
     .main {
       padding-top: fluid(121, 76);
       flex-direction: column;

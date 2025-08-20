@@ -551,6 +551,23 @@ p {
 .header__top {
   justify-content: space-between;
   padding-top: clamp(1.8125rem, 1.3104892761rem + 1.8766756032vw, 3.5625rem);
+  position: relative;
+}
+.header__top::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  width: 473px;
+  height: 210px;
+  background-image: url(../images/pizza-bg.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+@media (width <= 1024.98px) {
+  .header__top::after {
+    display: none;
+  }
 }
 .header__top .logo {
   display: flex;
@@ -689,6 +706,7 @@ p {
   width: clamp(1.25rem, 1.1065683646rem + 0.5361930295vw, 1.75rem);
 }
 .header__main {
+  position: relative;
   justify-content: space-between;
 }
 @media (width <= 1440.98px) {
@@ -699,6 +717,38 @@ p {
 @media (width <= 768.98px) {
   .header__main {
     flex-direction: column-reverse;
+  }
+}
+.header__main::before {
+  content: "";
+  position: absolute;
+  right: 10%;
+  bottom: -14%;
+  width: 518px;
+  height: 230px;
+  background-image: url(../images/pizza-bg.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+@media (width <= 1024.98px) {
+  .header__main::before {
+    display: none;
+  }
+}
+.header__main::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 518px;
+  height: 230px;
+  background-image: url(../images/pizza-bg.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+@media (width <= 1024.98px) {
+  .header__main::after {
+    display: none;
   }
 }
 .header__main .main {

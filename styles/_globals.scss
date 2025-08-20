@@ -17,6 +17,7 @@ body {
 
   line-height: 109.5%;
 
+  touch-action: pan-y;
   outline: none; 
   -webkit-tap-highlight-color: transparent;
 }

@@ -14,6 +14,7 @@ let lastFocusedBeforeLogin = null;
 const cartModal = document.getElementById('cartModal');
 const cartOpenBtn = document.querySelector('.bag');
 const cartCloseBtn = document.querySelector('.cart-modal__close');
+const cartPanel = document.querySelector('.cart-modal__panel');
 let lastFocusedBeforeCart = null;
 
 function setShadow(open) {
@@ -201,6 +202,94 @@ if (shadow) {
   // Навешиваем на перекрывающие элементы при открытом меню
   addPointerHandlers(menu);
   addPointerHandlers(shadow);
+})();
+
+// 4.1) Закрытие корзины свайпом вправо (Pointer Events с фолбэком на Touch)
+(() => {
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  const thresholdX = 60; // минимальная горизонтальная дистанция, px
+  const restraintY = 80; // допустимое вертикальное отклонение, px
+
+  const isCartOpen = () => !!cartModal && cartModal.classList.contains('cart-modal--open');
+
+  const onStart = (x, y) => {
+    if (!isCartOpen()) return;
+    startX = x;
+    startY = y;
+    tracking = true;
+  };
+
+  const onMove = (x, y, e) => {
+    if (!tracking) return;
+    const dx = x - startX;
+    const dy = y - startY;
+    // если движение преимущественно горизонтальное, отключим скролл
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    }
+  };
+
+  const onEnd = (x, y) => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = x - startX;
+    const dy = y - startY;
+
+    // свайп вправо: положительный dx, малое вертикальное смещение
+    if (dx > thresholdX && Math.abs(dy) < restraintY && isCartOpen()) {
+      closeCartModal();
+    }
+  };
+
+  const addPointerHandlers = (el) => {
+    if (!el) return;
+
+    // Pointer Events
+    if (window.PointerEvent) {
+      el.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse') return; // игнорируем мышь
+        onStart(e.clientX, e.clientY);
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'mouse') return;
+        onMove(e.clientX, e.clientY, e);
+      }, { passive: false });
+      const finish = (e) => {
+        if (e.pointerType === 'mouse') return;
+        onEnd(e.clientX, e.clientY);
+      };
+      el.addEventListener('pointerup', finish);
+      el.addEventListener('pointercancel', () => { tracking = false; });
+      return;
+    }
+
+    // Touch fallback
+    el.addEventListener('touchstart', (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      onStart(t.clientX, t.clientY);
+    }, { passive: true });
+
+    el.addEventListener('touchmove', (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      onMove(t.clientX, t.clientY, e);
+    }, { passive: false });
+
+    el.addEventListener('touchend', (e) => {
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      onEnd(t.clientX, t.clientY);
+    }, { passive: true });
+
+    el.addEventListener('touchcancel', () => { tracking = false; });
+  };
+
+  // Навешиваем на панель корзины
+  addPointerHandlers(cartPanel);
 })();
 
 // 5) Login modal wiring

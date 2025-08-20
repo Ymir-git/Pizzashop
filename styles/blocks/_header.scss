@@ -73,7 +73,6 @@
         height: 100dvh;
         background-color: #000;
         transition: .5s ease;
-        touch-action: pan-y;
       }
 
       &--open {
@@ -480,7 +479,6 @@
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.5);
   transition: 0.5s;
-  touch-action: pan-y;
 
   &--open {
     opacity: 1;

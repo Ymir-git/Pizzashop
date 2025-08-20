@@ -288,8 +288,9 @@ if (shadow) {
     el.addEventListener('touchcancel', () => { tracking = false; });
   };
 
-  // Навешиваем на панель корзины
+  // Навешиваем на панель и фон корзины
   addPointerHandlers(cartPanel);
+  addPointerHandlers(cartModal);
 })();
 
 // 5) Login modal wiring
